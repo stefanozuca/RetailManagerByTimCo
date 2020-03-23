@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Configuration;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,21 +10,28 @@ namespace TRMDataManager.Library.DataAccess
 {
     public class SaleData
     {
-        //public List<ProductModel> GetProducts()
-        //{
-        //    SQLDataAccess sql = new SQLDataAccess();
+        private readonly IConfiguration config;
 
-        //    var output = sql.LoadData<ProductModel, dynamic>("dbo.spGetAllProduct", new { }, "TRMData");
+        public SaleData(IConfiguration config)
+        {
+            this.config = config;
+        }
 
-        //    return output;
-        //}
+        public List<ProductModel> GetProducts()
+        {
+            SQLDataAccess sql = new SQLDataAccess(config);
+
+            var output = sql.LoadData<ProductModel, dynamic>("dbo.spGetAllProduct", new { }, "TRMData");
+
+            return output;
+        }
 
         public void SaveSale(SaleModel saleInfo, string userId)
         {
             // TODO: Make this SOLID/DRY/Btter
             // Start filling in the sale detail models we will save to the database
             List<SaleDetailDbModel> details = new List<SaleDetailDbModel>();
-            ProductData product = new ProductData();
+            ProductData product = new ProductData(config);
             var taxRate = ConfigHelper.GetTaxRate()/100;
 
             foreach (var item in saleInfo.SaleDetails)
@@ -63,7 +71,7 @@ namespace TRMDataManager.Library.DataAccess
             sale.Total = sale.SubTotal + sale.Tax;
 
             // Save the sale model
-            SQLDataAccess sql = new SQLDataAccess();
+            SQLDataAccess sql = new SQLDataAccess(config);
             sql.SaveData("dbo.spSale_Insert", sale, "TRMData");
 
             // Get the Id from the sale model

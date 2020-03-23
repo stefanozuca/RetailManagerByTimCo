@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 
 namespace TRMApi.Controllers
 {
@@ -13,6 +14,12 @@ namespace TRMApi.Controllers
     [Authorize]
     public class InventoryController : ControllerBase
     {
+        private readonly IConfiguration config;
+
+        public InventoryController(IConfiguration config)
+        {
+            this.config = config;
+        }
         //[Authorize(Roles ="Manager,Admin")]
         //public List<InventoryModel> Get()
         //{

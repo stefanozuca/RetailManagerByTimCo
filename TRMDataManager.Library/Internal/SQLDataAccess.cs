@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -11,9 +12,16 @@ namespace TRMDataManager.Library.Internal
 {
     public class SQLDataAccess
     {
+        IConfiguration _config;
+
+        public SQLDataAccess(IConfiguration config)
+        {
+            _config = config;
+        }
+
         public string GetConnectionString(string name)
         {
-            return ConfigurationManager.ConnectionStrings[name].ConnectionString;
+            return _config.GetConnectionString(name);
         }
 
         public List<T> LoadData<T, U>(string storeProcedure, U parameters, string connectionStringName)

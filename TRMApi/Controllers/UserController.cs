@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using TRMApi.Data;
 using TRMApi.Models;
 using TRMDataManager.Library.DataAccess;
@@ -21,18 +22,20 @@ namespace TRMApi.Controllers
     {
         private readonly ApplicationDbContext context;
         private readonly UserManager<IdentityUser> userManager;
+        private readonly IConfiguration config;
 
-        public UserController(ApplicationDbContext context, UserManager<IdentityUser> userManager)
+        public UserController(ApplicationDbContext context, UserManager<IdentityUser> userManager, IConfiguration config)
         {
             this.context = context;
             this.userManager = userManager;
+            this.config = config;
         }
 
         [HttpGet]
         public UserModel GetById()
         {
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            UserData data = new UserData();
+            UserData data = new UserData(config);
 
             return data.GetUserById(userId).First();
         }

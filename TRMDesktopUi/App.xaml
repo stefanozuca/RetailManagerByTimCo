@@ -1,9 +1,10 @@
 ﻿<Application x:Class="TRMDesktopUi.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:TRMDesktopUi"
-             StartupUri="Views/ShellView.xaml">
+             xmlns:local="clr-namespace:TRMDesktopUi">
     <Application.Resources>
-         
+        <ResourceDictionary>
+            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

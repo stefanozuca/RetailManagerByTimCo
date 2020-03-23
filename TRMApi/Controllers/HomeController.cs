@@ -32,7 +32,7 @@ namespace TRMApi.Controllers
 
         public async Task<IActionResult> Privacy()
         {
-            //string[] roles = { "Admin, Manager, Cashier" };
+            //string[] roles = { "Admin", "Manager", "Cashier" };
 
             //foreach (var role in roles)
             //{
@@ -44,7 +44,7 @@ namespace TRMApi.Controllers
             //    }
             //}
 
-            //var user = await _userManager.FindByEmailAsync("test@gmail.com");
+            //var user = await _userManager.FindByEmailAsync("test2@gmail.com");
 
             //if (user != null)
             //{

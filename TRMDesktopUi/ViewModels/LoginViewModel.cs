@@ -12,10 +12,8 @@ namespace SWADesktopUI.ViewModels
 {
     public class LoginViewModel : Screen
     {
-        private string _userName;
-        private string _password;
-        private IAPIHelper _apiHelper;
         private IEventAggregator _events;
+        private IAPIHelper _apiHelper;
 
         public LoginViewModel(IAPIHelper apIHelper, IEventAggregator events)
         {
@@ -23,6 +21,7 @@ namespace SWADesktopUI.ViewModels
             _events = events;
         }
 
+        private string _userName;
         public string UserName
         {
             get { return _userName; }
@@ -34,6 +33,7 @@ namespace SWADesktopUI.ViewModels
             }
         }
 
+        private string _password;
         public string Password
         {
             get { return _password; }
