@@ -24,6 +24,7 @@ namespace TRMApi.Controllers
         }
 
         [Authorize(Roles = "Cashier")]
+        [HttpGet]
         public List<ProductModel> Get()
         {
             ProductData data = new ProductData(config);

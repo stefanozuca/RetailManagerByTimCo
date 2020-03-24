@@ -21,7 +21,7 @@ namespace SWADesktopUI.ViewModels
             _events = events;
         }
 
-        private string _userName;
+        private string _userName = "test2@gmail.com";
         public string UserName
         {
             get { return _userName; }
@@ -33,7 +33,7 @@ namespace SWADesktopUI.ViewModels
             }
         }
 
-        private string _password;
+        private string _password = "Test.2083";
         public string Password
         {
             get { return _password; }

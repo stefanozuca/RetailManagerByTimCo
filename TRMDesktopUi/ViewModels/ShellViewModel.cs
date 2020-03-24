@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Caliburn.Micro;
+using SWADesktopUI.Library.Models;
 using SWAWPFDesktopUI.EventModels;
 using SWAWPFDesktopUI.ViewModels;
 
@@ -14,18 +15,32 @@ namespace SWADesktopUI.ViewModels
     {
         private IEventAggregator _events;
         private SalesViewModel _salesVM;
-        
-        public ShellViewModel( IEventAggregator events, SalesViewModel salesVM)
+        private readonly ILoggedInUserModel user;
+
+        public ShellViewModel( IEventAggregator events, SalesViewModel salesVM, ILoggedInUserModel user)
         {
             _events = events;
             _salesVM = salesVM;
-
+            this.user = user;
             _events.SubscribeOnPublishedThread(this);
 
             ActivateItemAsync(IoC.Get<LoginViewModel>(), new CancellationToken());
         }
 
-        public bool IsLoggedIn { get; set; }
+        public bool IsLoggedIn 
+        {
+            get
+            {
+                bool output = false;
+
+                if (string.IsNullOrEmpty(user.Token) == false)
+                {
+                    output = true;
+                }
+
+                return output;
+            }
+        }
 
         public void ExitApplication()
         {
@@ -37,13 +52,13 @@ namespace SWADesktopUI.ViewModels
         //    await ActivateItemAsync(IoC.Get<UserDisplayViewModel>(), new CancellationToken()); 
         //}
 
-        //public async Task LogOut()
-        //{
-        //    _user.ResetUserModel();
-        //    _apiHelper.LogOffUser();
-        //    await ActivateItemAsync(IoC.Get<LoginViewModel>(), new CancellationToken());
-        //    NotifyOfPropertyChange(() => IsLoggedIn);
-        //}
+        public async Task LogOut()
+        {
+            _user.ResetUserModel();
+            user.LogOffUser();
+            await ActivateItemAsync(IoC.Get<LoginViewModel>(), new CancellationToken());
+            NotifyOfPropertyChange(() => IsLoggedIn);
+        }
 
         public async Task HandleAsync(LogOnEvent message, CancellationToken cancellationToken)
         {

@@ -65,6 +65,17 @@ namespace SWAWPFDesktopUI.ViewModels
 			}
 		}
 
+		private async Task ResetSalesViewModel()
+		{
+			Cart = new BindingList<CartItemDisplayModel>();
+			await LoadProducts();
+
+			NotifyOfPropertyChange(() => SubTotal);
+			NotifyOfPropertyChange(() => Tax);
+			NotifyOfPropertyChange(() => Total);
+			NotifyOfPropertyChange(() => CanCheckOut);
+		}
+
 		private CartItemDisplayModel _selectedCartItem;
 		public CartItemDisplayModel SelectedCartItem
 		{
@@ -194,7 +205,7 @@ namespace SWAWPFDesktopUI.ViewModels
 			{
 				bool output = false;
 
-				if (SelectedCartItem?.Product.QuantityInStock > 0 && SelectedCartItem != null)
+				if (SelectedCartItem?.QuantityInCart > 0 && SelectedCartItem != null)
 				{
 					output = true;
 				}
@@ -220,6 +231,7 @@ namespace SWAWPFDesktopUI.ViewModels
 			NotifyOfPropertyChange(() => Tax);
 			NotifyOfPropertyChange(() => Total);
 			NotifyOfPropertyChange(() => CanCheckOut);
+			NotifyOfPropertyChange(() => CanAddToCart);
 		}
 
 		public bool CanCheckOut
@@ -248,6 +260,8 @@ namespace SWAWPFDesktopUI.ViewModels
 			}
 
 			await _saleEndpoint.PostSale(sale);
+
+			await ResetSalesViewModel();
 		}
 	}
 }

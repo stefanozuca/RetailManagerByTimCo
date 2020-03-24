@@ -25,6 +25,7 @@ namespace TRMApi.Controllers
         }
 
         [Authorize(Roles = "Cashier")]
+        [HttpPost]
         public void Post(SaleModel item)
         {
             SaleData data = new SaleData(config);

@@ -48,7 +48,7 @@ namespace SWADesktopUI.Library.Api
                 new KeyValuePair<string, string>("password", password)
             });
 
-            using (HttpResponseMessage response = await apiClient.PostAsync("/Token", data))
+            using (HttpResponseMessage response = await apiClient.PostAsync("api/token", data))
             {
                 if (response.IsSuccessStatusCode)
                 {

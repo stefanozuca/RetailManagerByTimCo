@@ -10,5 +10,7 @@ namespace SWADesktopUI.Library.Models
         string Id { get; set; }
         string Token { get; set; }
         DateTime CreatedDate { get; set; }
+
+        void LogOffUser();
     }
 }
