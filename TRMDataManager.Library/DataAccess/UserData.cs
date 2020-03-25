@@ -17,7 +17,7 @@ namespace TRMDataManager.Library.DataAccess
         }
         public List<UserModel> GetUserById(string id)
         {
-            SQLDataAccess sql = new SQLDataAccess(config);
+            SqlDataAccess sql = new SqlDataAccess(config);
 
             var p = new { Id = id };
 

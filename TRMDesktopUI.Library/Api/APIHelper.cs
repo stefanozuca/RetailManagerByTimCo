@@ -86,7 +86,11 @@ namespace SWADesktopUI.Library.Api
                     throw new Exception(response.ReasonPhrase);
                 }
             }
-            
+        }
+
+        public void LogOffUser()
+        {
+            apiClient.DefaultRequestHeaders.Clear();
         }
     }
 }

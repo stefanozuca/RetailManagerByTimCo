@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Caliburn.Micro;
+using SWADesktopUI.Library.Api;
 using SWADesktopUI.Library.Models;
 using SWAWPFDesktopUI.EventModels;
 using SWAWPFDesktopUI.ViewModels;
@@ -16,12 +17,14 @@ namespace SWADesktopUI.ViewModels
         private IEventAggregator _events;
         private SalesViewModel _salesVM;
         private readonly ILoggedInUserModel user;
+        private readonly IAPIHelper api;
 
-        public ShellViewModel( IEventAggregator events, SalesViewModel salesVM, ILoggedInUserModel user)
+        public ShellViewModel( IEventAggregator events, SalesViewModel salesVM, ILoggedInUserModel user, IAPIHelper api)
         {
             _events = events;
             _salesVM = salesVM;
             this.user = user;
+            this.api = api;
             _events.SubscribeOnPublishedThread(this);
 
             ActivateItemAsync(IoC.Get<LoginViewModel>(), new CancellationToken());
@@ -54,8 +57,8 @@ namespace SWADesktopUI.ViewModels
 
         public async Task LogOut()
         {
-            _user.ResetUserModel();
-            user.LogOffUser();
+            user.ResetUserModel();
+            api.LogOffUser();
             await ActivateItemAsync(IoC.Get<LoginViewModel>(), new CancellationToken());
             NotifyOfPropertyChange(() => IsLoggedIn);
         }

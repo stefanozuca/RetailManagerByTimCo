@@ -10,11 +10,11 @@ using System.Text;
 
 namespace TRMDataManager.Library.Internal
 {
-    public class SQLDataAccess
+    public class SqlDataAccess : IDisposable
     {
         IConfiguration _config;
 
-        public SQLDataAccess(IConfiguration config)
+        public SqlDataAccess(IConfiguration config)
         {
             _config = config;
         }
@@ -47,6 +47,50 @@ namespace TRMDataManager.Library.Internal
                     commandType: CommandType.StoredProcedure);
 
             }
+        }
+
+        private IDbConnection _connection;
+        private IDbTransaction _transaction;
+        public void StartTransaction(string connectionStringName)
+        {
+            string connectionString = GetConnectionString(connectionStringName);
+
+            _connection = new SqlConnection(connectionString);
+            _connection.Open();
+
+            _transaction = _connection.BeginTransaction();
+        }
+
+        public void SaveDataInTransaction<T>(string storeProcedure, T parameters)
+        {
+            _connection.Execute(storeProcedure, parameters,
+                commandType: CommandType.StoredProcedure, transaction: _transaction);   
+        }
+
+        public List<T> LoadDataInTransaction<T, U>(string storeProcedure, U parameters)
+        {
+            List<T> rows = _connection.Query<T>(storeProcedure, parameters,
+                    commandType: CommandType.StoredProcedure, transaction: _transaction).ToList();
+
+            return rows;
+            
+        }
+
+        public void CommitTransaction()
+        {
+            _transaction?.Commit();
+            _connection?.Close();
+        }
+
+        public void RollBackTransaction()
+        {
+            _transaction?.Rollback();
+            _connection?.Close();
+        }
+
+        public void Dispose()
+        {
+            CommitTransaction();
         }
     }
 }
