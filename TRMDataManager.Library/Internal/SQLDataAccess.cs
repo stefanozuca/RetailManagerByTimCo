@@ -12,7 +12,8 @@ namespace TRMDataManager.Library.Internal
 {
     public class SqlDataAccess : IDisposable
     {
-        IConfiguration _config;
+        private IConfiguration _config;
+        private bool IsClosed = false;
 
         public SqlDataAccess(IConfiguration config)
         {
@@ -45,7 +46,6 @@ namespace TRMDataManager.Library.Internal
             {
                 connection.Execute(storeProcedure, parameters,
                     commandType: CommandType.StoredProcedure);
-
             }
         }
 
@@ -59,6 +59,8 @@ namespace TRMDataManager.Library.Internal
             _connection.Open();
 
             _transaction = _connection.BeginTransaction();
+
+            IsClosed = false;
         }
 
         public void SaveDataInTransaction<T>(string storeProcedure, T parameters)
@@ -73,24 +75,40 @@ namespace TRMDataManager.Library.Internal
                     commandType: CommandType.StoredProcedure, transaction: _transaction).ToList();
 
             return rows;
-            
         }
 
         public void CommitTransaction()
         {
             _transaction?.Commit();
             _connection?.Close();
+
+            IsClosed = true;
         }
 
         public void RollBackTransaction()
         {
             _transaction?.Rollback();
             _connection?.Close();
+
+            IsClosed = true;
         }
 
         public void Dispose()
         {
-            CommitTransaction();
+            if (!IsClosed)
+            {
+                try
+                {
+                    CommitTransaction();
+                }
+                catch
+                {
+                    // Logg 
+                }
+            }
+
+            _transaction = null;
+            _connection = null;
         }
     }
 }
