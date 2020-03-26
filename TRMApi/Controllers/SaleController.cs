@@ -34,12 +34,12 @@ namespace TRMApi.Controllers
             data.SaveSale(item, userId);
         }
 
-        //[Authorize(Roles = "Admin,Manager")]
-        //[Route("GetSalesReport")]
-        //public List<SaleReportModel> GetSaleReport()
-        //{
-        //    SaleData data = new SaleData();
-        //    return data.GetSaleReport();
-        //}
+        [Authorize(Roles = "Admin,Manager")]
+        [Route("GetSalesReport")]
+        public List<SaleReportModel> GetSaleReport()
+        {
+            SaleData data = new SaleData(config);
+            return data.GetSaleReport();
+        }
     }
 }

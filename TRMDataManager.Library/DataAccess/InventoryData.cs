@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using TRMDataManager.Library.Internal;
+using TRMDataManager.Library.Models;
 
 namespace TRMDataManager.Library.DataAccess
 {
@@ -15,20 +16,20 @@ namespace TRMDataManager.Library.DataAccess
             this.config = config;
         }
 
-        //public List<InventoryModel> GetInventory()
-        //{
-        //    SqlDataAccess sql = new SqlDataAccess(_config);
+        public List<InventoryModel> GetInventory()
+        {
+            SqlDataAccess sql = new SqlDataAccess(config);
 
-        //    var output = sql.LoadData<InventoryModel, dynamic>("dbo.spInventory_GetAll", new { }, "TRMData");
+            var output = sql.LoadData<InventoryModel, dynamic>("dbo.spInventory_GetAll", new { }, "TRMData");
 
-        //    return output;
-        //}
+            return output;
+        }
 
-        //public void SaveInventoryRecord(InventoryModel item)
-        //{
-        //    SqlDataAccess sql = new SqlDataAccess(_config);
+        public void SaveInventoryRecord(InventoryModel item)
+        {
+            SqlDataAccess sql = new SqlDataAccess(config);
 
-        //    sql.SaveData("dbo.spInventory_Insert", item, "TRMData");
-        //}
+            sql.SaveData("dbo.spInventory_Insert", item, "TRMData");
+        }
     }
 }

@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using TRMDataManager.Library.DataAccess;
+using TRMDataManager.Library.Models;
 
 namespace TRMApi.Controllers
 {
@@ -20,20 +22,21 @@ namespace TRMApi.Controllers
         {
             this.config = config;
         }
-        //[Authorize(Roles ="Manager,Admin")]
-        //[HttpGet]
-        //public List<InventoryModel> Get()
-        //{
-        //    InventoryData data = new InventoryData();
-        //    return data.GetInventory();
-        //}
 
-        //[Authorize(Roles = "Admin")]
-        //[HttpPost]
-        //public void Post(InventoryModel item)
-        //{
-        //    InventoryData data = new InventoryData();
-        //    data.SaveInventoryRecord();
-        //}
+        [Authorize(Roles = "Manager,Admin")]
+        [HttpGet]
+        public List<InventoryModel> Get()
+        {
+            InventoryData data = new InventoryData(config);
+            return data.GetInventory();
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        public void Post(InventoryModel item)
+        {
+            InventoryData data = new InventoryData(config);
+            data.SaveInventoryRecord(item);
+        }
     }
 }
