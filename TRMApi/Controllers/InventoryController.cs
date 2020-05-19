@@ -21,6 +21,7 @@ namespace TRMApi.Controllers
         public InventoryController(IConfiguration config)
         {
             this.config = config;
+            // hola luis
         }
 
         [Authorize(Roles = "Manager,Admin")]
