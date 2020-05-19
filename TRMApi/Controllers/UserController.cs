@@ -58,13 +58,20 @@ namespace TRMApi.Controllers
                 {
                     Id = user.Id,
                     Email = user.Email
+
+            /*    var users = context.Users.ToList();
+                var userRoles = from ur in context.UserRoles
+                            join r in context.Roles on ur.RoleId equals r.Id
+                            select new { ur.UserId, ur.RoleId, r.Name };    */
+                       
+
                 };
 
                 u.Roles = userRoles.Where(x => x.UserId == u.Id).ToDictionary(key => key.RoleId, val => val.Name);
 
                 output.Add(u);
             }
-            
+            // test commit
             return output;
         }
 
