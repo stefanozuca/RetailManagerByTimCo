@@ -14,7 +14,7 @@ namespace TRMDataManager.Library.DataAccess
 
         public SaleData(IConfiguration config)
         {
-            this.config = config;
+            this.config = config;//tercer cambio
         }
 
         public List<ProductModel> GetProducts()
